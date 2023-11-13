@@ -1,0 +1,161 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #d0d0ce6e;
+    height: 100vh;
+    overflow: auto;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 5%;
+}
+
+.login-box {
+    display: flex;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-image {
+    width: 50%; 
+    object-fit: cover;
+}
+
+.login-form {
+    flex: 1;
+    padding: 60px;
+    background-color: white;
+    margin-top: 70px;
+}
+
+.login-form .form-control {
+    font-size: 16px;
+    height: 45px;
+    padding: 10px 15px;
+}
+
+.login-form .btn {
+    font-size: 16px;
+    height: 50px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    margin-top: 50px;
+    width: 60%;
+    display: block;
+    margin: 50px auto 0 auto;
+}
+
+.login-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form .text-center a {
+    font-size: 15px;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Estilos para pantallas grandes */
+@media (min-width: 1201px) {
+    .login-container {
+        padding: 20px 0;
+    }
+
+    .login-box {
+        max-width: 850px;
+    }
+
+    .login-form{
+        padding: 30px;
+    }
+
+    .login-form .form-control,
+    .login-form .btn {
+        font-size: 14px; /* Ajustar según la necesidad */
+    }
+}
+
+
+/* Estilos para tablets */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .login-box {
+        flex-direction: column;
+    }
+
+    .login-image {
+        display: none;
+    }
+
+    .login-form {
+        padding: 40px;
+    }
+
+    .login-header h2 {
+        font-size: 22px;
+    }
+
+    .login-form .form-control,
+    .login-form .btn {
+        font-size: 15px;
+    }
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+.login-image {
+    display: none;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 5px;
+    
+}
+
+.login-form {
+    padding: 30px 40px;
+    margin: 0 auto;
+    max-width: 90%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.login-box {
+    box-shadow: none;
+    background-color: transparent;
+    min-height: 400px;
+}
+
+.login-container {
+    padding: 20px 5px;
+}
+
+.login-form .form-control,
+.login-form .btn {
+    font-size: 14px;
+}
+
+.login-header h2 {
+    font-size: 20px;
+}
+}

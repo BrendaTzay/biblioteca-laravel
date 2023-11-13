@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('prestamos', function (Blueprint $table) {
+            $table->bigIncrements('IdPrestamo');
+            $table->unsignedBigInteger('IdUsuario');
+            $table->unsignedBigInteger('IdLibro');
+            $table->date('FechaSalida');
+            $table->date('FechaDevolucion');
+            $table->string('EstadoPrestamo');
+            $table->text('ObservacionPrestamo')->nullable();
+            $table->timestamps();
+        
+            $table->foreign('IdUsuario')->references('IdUsuario')->on('usuarios')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('IdLibro')->references('IdLibro')->on('libros')->onUpdate('cascade')->onDelete('cascade');
+        });
+        
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('prestamos');
+    }
+};
