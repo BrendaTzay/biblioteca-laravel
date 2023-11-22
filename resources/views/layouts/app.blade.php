@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Default Title')</title>
+    <title>@yield('title', 'Biblioteca')</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
@@ -77,6 +77,9 @@
                             <span class="nav__name">Categorias</span>
                         </a>
                     </div>
+                </div>
+                <div class="nav__item">
+                    <span class="nav__name">Desarrollado por: Brenda Marina Tzay Cuxulic</span>
                 </div>
             </nav>
         </div>

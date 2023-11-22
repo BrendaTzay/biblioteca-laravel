@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use GuzzleHttp\Client;
+
 
 class ChatBotController extends Controller
 {
@@ -16,23 +16,24 @@ class ChatBotController extends Controller
     public function consultar(Request $request)
     {
         $consulta = $request->input('consulta');
+        $endpoint = env('CHATBOT_ENDPOINT', 'http://194.163.45.97/consulta');
 
-        // Ruta según la ubicación real de tu script en modo variable de entorno
-        $scriptPath = env('CHATBOT_SCRIPT_PATH');
-        // Ruta del intérprete de Python en el entorno virtual
-        $pythonPath = env('PYTHON_ENV_PATH');
-        $process = new Process([$pythonPath, $scriptPath, escapeshellarg($consulta)]);
+        // Crea un nuevo cliente Guzzle
+        $client = new Client();
 
-        // Aumenta el tiempo límite del proceso (en segundos)
-        $process->setTimeout(130);
+        try {
+            // Realiza una petición POST al endpoint de tu chatbot con la consulta
+            $response = $client->request('POST', $endpoint, [
+                'json' => ['consulta' => $consulta]
+            ]);
 
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            // Decodifica la respuesta JSON
+            $output = json_decode($response->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            // Maneja la excepción si algo sale mal
+            $output = ['error' => $e->getMessage()];
         }
 
-        $output = json_decode($process->getOutput(), true);
         return response()->json($output);
     }
 }
