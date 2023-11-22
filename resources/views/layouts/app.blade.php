@@ -78,9 +78,6 @@
                         </a>
                     </div>
                 </div>
-                <div class="nav__item">
-                    <span class="nav__name">Desarrollado por: Brenda Marina Tzay Cuxulic</span>
-                </div>
             </nav>
         </div>
     @endif
