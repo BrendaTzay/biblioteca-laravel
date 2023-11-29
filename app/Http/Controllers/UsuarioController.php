@@ -95,6 +95,27 @@ class UsuarioController extends Controller
             'NacimientoUsuario.before_or_equal' => 'La fecha de nacimiento no puede ser una fecha futura.',
         ]);
 
+        // Comprobar duplicados
+        $usuarios = Usuario::where('NombreUsuario', $request->NombreUsuario)
+            ->orWhere('ApellidoUsuario', $request->ApellidoUsuario)
+            ->orWhere('TelefonoUsuario', $request->TelefonoUsuario)
+            ->orWhere('NacimientoUsuario', $request->NacimientoUsuario)
+            ->get();
+
+        $coincidencias = $usuarios->filter(function ($usuario) use ($request) {
+            $coincidencias = 0;
+            if ($usuario->NombreUsuario === $request->NombreUsuario) $coincidencias++;
+            if ($usuario->ApellidoUsuario === $request->ApellidoUsuario) $coincidencias++;
+            if ($usuario->TelefonoUsuario === $request->TelefonoUsuario) $coincidencias++;
+            if ($usuario->NacimientoUsuario === $request->NacimientoUsuario) $coincidencias++;
+
+            return $coincidencias >= 3; 
+        });
+
+        if ($coincidencias->isNotEmpty()) {
+            return response()->json(['error' => 'No se puede ingresar el usuario porque ya existe'], 409);
+        }
+
         try {
             // Genera el CodigoUsuario antes de crear el usuario
             $codigoUsuario = substr($request->NombreUsuario, 0, 2) . $request->ApellidoUsuario;

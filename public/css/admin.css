@@ -427,6 +427,14 @@ a{
   font-weight: bold;
 }
 
+.nav__item {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #dfdcdc;
+}
+
+
 
 
 

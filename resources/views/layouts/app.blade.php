@@ -78,6 +78,9 @@
                         </a>
                     </div>
                 </div>
+                <div class="nav__item">
+                    <span class="nav__name">Desarrollado por: Brenda Marina Tzay Cuxulic</span>
+                </div>
             </nav>
         </div>
     @endif
@@ -85,6 +88,8 @@
     <section id="content" class="flex-grow-1 p-3">
         @yield('content')
     </section>
+
+
 
     <script src="{{ asset('js/autocomplete.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
