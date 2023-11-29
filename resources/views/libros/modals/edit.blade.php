@@ -50,9 +50,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="editCantidadLibro">Cantidad de Libros</label>
-                                <input type="number" class="form-control" id="editCantidadLibro" name="CantidadLibro" min="0" required>
-                                <small id="editErrorCantidadLibro" class="error-message text-danger d-none"></small>
+                                <label for="editCantidadLibroIngesado">Cantidad de Libros Ingresados</label>
+                                <input type="number" class="form-control" id="editCantidadLibroIngresado" name="CantidadLibroIngresado" min="0" required>
+                                <small id="editErrorCantidadLibroIngresado" class="error-message text-danger d-none"></small>
                             </div>
                         </div>
                     </div>

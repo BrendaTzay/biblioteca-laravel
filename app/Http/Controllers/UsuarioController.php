@@ -6,6 +6,8 @@ use App\Models\Usuario;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class UsuarioController extends Controller
 {
@@ -65,6 +67,18 @@ class UsuarioController extends Controller
             'DireccionUsuario' => 'required|string|max:255',
             'TelefonoUsuario' => 'required|regex:/^[0-9]{7,10}$/',
             'GradoUsuario' => 'required_if:tipoUsuario,Escuela',
+            'NacimientoUsuario' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                function ($attribute, $value, $fail) {
+                    $nacimiento = Carbon::parse($value);
+                    $edadMinima = Carbon::now()->subYears(5);
+                    if ($nacimiento->greaterThan($edadMinima)) {
+                        $fail('La fecha de nacimiento debe corresponder a una edad de al menos 5 años.');
+                    }
+                },
+            ],
         ], [
             'NombreUsuario.required' => 'Debe ingresar el nombre',
             'NombreUsuario.regex' => 'El nombre solo debe contener letras y espacios',
@@ -76,6 +90,9 @@ class UsuarioController extends Controller
             'TelefonoUsuario.required' => 'Debe ingresar el teléfono',
             'TelefonoUsuario.regex' => 'El teléfono debe tener entre 7 y 10 dígitos',
             'GradoUsuario.required_if' => 'Debe ingresar el grado si el tipo de usuario es Escuela',
+            'NacimientoUsuario.required' => 'La fecha de nacimiento es obligatoria',
+            'NacimientoUsuario.date' => 'El formato de la fecha de nacimiento no es válido',
+            'NacimientoUsuario.before_or_equal' => 'La fecha de nacimiento no puede ser una fecha futura.',
         ]);
 
         try {
@@ -112,6 +129,18 @@ class UsuarioController extends Controller
             'DireccionUsuario' => 'required|string|max:255',
             'TelefonoUsuario' => 'required|regex:/^[0-9]{7,10}$/',
             'GradoUsuario' => 'required_if:tipoUsuario,Escuela',
+            'NacimientoUsuario' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                function ($attribute, $value, $fail) {
+                    $nacimiento = Carbon::parse($value);
+                    $edadMinima = Carbon::now()->subYears(5);
+                    if ($nacimiento->greaterThan($edadMinima)) {
+                        return $fail('El usuario debe tener al menos 5 años de edad.');
+                    }
+                },
+            ],
         ], [
             'NombreUsuario.required' => 'Debe ingresar el nombre',
             'NombreUsuario.regex' => 'El nombre solo debe contener letras y espacios',
@@ -123,6 +152,9 @@ class UsuarioController extends Controller
             'TelefonoUsuario.required' => 'Debe ingresar el teléfono',
             'TelefonoUsuario.regex' => 'El teléfono debe tener entre 7 y 10 dígitos',
             'GradoUsuario.required_if' => 'Debe ingresar el grado si el tipo de usuario es Escuela',
+            'NacimientoUsuario.required' => 'La fecha de nacimiento es obligatoria',
+            'NacimientoUsuario.date' => 'El formato de la fecha de nacimiento no es válido',
+            'NacimientoUsuario.before_or_equal' => 'La fecha de nacimiento no puede ser una fecha futura.',
         ]);
 
         try {
@@ -148,6 +180,7 @@ class UsuarioController extends Controller
             $usuario->delete();
             return response()->json(['success' => 'Usuario eliminado con éxito!'], 200);
         } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
             return response()->json(['error' => 'Error al eliminar usuario'], 500);
         }
     }

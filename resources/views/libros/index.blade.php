@@ -50,7 +50,8 @@
                                         <th>Autor</th>
                                         <th>Categoría</th>
                                         <th>Editorial</th>
-                                        <th>Cantidad</th>
+                                        <th>Libros Ingresados</th>
+                                        <th>Cantidad Actual</th>
                                         <th>Descripción</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
@@ -64,6 +65,7 @@
                                             <td>{{ $libro->autor->NombreAutor }} {{ $libro->autor->ApellidoAutor }}</td>
                                             <td>{{ $libro->categoria->NombreCategoria }}</td>
                                             <td>{{ $libro->editorial->NombreEditorial }}</td>
+                                            <td>{{ $libro->CantidadLibroIngresado }}</td>
                                             <td>{{ $libro->CantidadLibro }}</td>
                                             <td>
                                                 <div class="text-truncate" title="{{ $libro->DescripcionLibro }}"
@@ -92,7 +94,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="9" class="text-center">No hay libros registrados</td>
+                                            <td colspan="10" class="text-center">No hay libros registrados</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -125,7 +127,7 @@
                 $(errorId).text(mensajeError);
                 $(errorId).removeClass('d-none');
                 return false;
-            } else if ((campoId === '#CantidadLibro' || campoId === '#editCantidadLibro') && parseInt(valor) < 1) {
+            } else if ((campoId === '#CantidadLibroIngresado' || campoId === '#editCantidadLibro') && parseInt(valor) < 1) {
                 $(errorId).text('Debe ingresar al menos 1 cantidad de libro y que no sea negativa.');
                 $(errorId).removeClass('d-none');
                 return false;
@@ -134,7 +136,6 @@
             $(errorId).addClass('d-none');
             return true;
         }
-
 
         $('#addLibroModal').on('show.bs.modal', function(e) {
             $('.error-message').addClass('d-none');
@@ -151,18 +152,20 @@
                 'Debe ingresar una categoría.');
             const esEditorialValida = validarCampo('#editorial', '#errorEditorial',
                 'Debe ingresar una editorial.');
-            const esCantidadValida = validarCampo('#CantidadLibro', '#errorCantidadLibro',
+            const esCantidadIngresadaValida = validarCampo('#CantidadLibroIngresado',
+                '#errorCantidadLibroIngresado',
                 'Debe ingresar la cantidad del libro.');
             const esDescripcionValida = validarCampo('#DescripcionLibro', '#errorDescripcionLibro',
                 'Debe ingresar una descripción del libro.');
 
-            if (esTituloValido && esAutorValido && esCategoriaValida && esEditorialValida && esCantidadValida &&
+            if (esTituloValido && esAutorValido && esCategoriaValida && esEditorialValida &&
+                esCantidadIngresadaValida &&
                 esDescripcionValida) {
                 var titulo = $('#TituloLibro').val();
                 var idAutor = $('#IdAutor').val();
                 var idCategoria = $('#IdCategoria').val();
                 var idEditorial = $('#IdEditorial').val();
-                var cantidad = $('#CantidadLibro').val();
+                var cantidadIngresada = $('#CantidadLibroIngresado').val();
                 var descripcion = $('#DescripcionLibro').val();
 
                 $.ajax({
@@ -174,7 +177,7 @@
                         IdAutor: idAutor,
                         IdCategoria: idCategoria,
                         IdEditorial: idEditorial,
-                        CantidadLibro: cantidad,
+                        CantidadLibroIngresado: cantidadIngresada,
                         DescripcionLibro: descripcion,
                     },
                     success: function(response) {
@@ -196,6 +199,7 @@
                     <td>${response.data.autor.NombreAutor} ${response.data.autor.ApellidoAutor}</td>
                     <td>${response.data.categoria.NombreCategoria}</td>
                     <td>${response.data.editorial.NombreEditorial}</td>
+                    <td>${response.data.CantidadLibroIngresado}</td>
                     <td>${response.data.CantidadLibro}</td>
                     <td>
                         <div class="text-truncate" title="${response.data.DescripcionLibro}" style="max-width: 100px;">
@@ -276,18 +280,14 @@
                     if (response.success) {
                         $('#editLibroModal').modal('show');
                         $('#editTituloLibro').val(response.data.TituloLibro);
-
-                        // Actualizar los campos de texto con los nombres del autor, categoría y editorial
                         $('#editAutor').val(response.data.autor.NombreAutor + ' ' + response.data.autor
                             .ApellidoAutor);
                         $('#editCategoria').val(response.data.categoria.NombreCategoria);
                         $('#editEditorial').val(response.data.editorial.NombreEditorial);
-
-                        // Continúa estableciendo los valores de los campos ocultos
                         $('#editIdAutor').val(response.data.IdAutor);
                         $('#editIdCategoria').val(response.data.IdCategoria);
                         $('#editIdEditorial').val(response.data.IdEditorial);
-                        $('#editCantidadLibro').val(response.data.CantidadLibro);
+                        $('#editCantidadLibroIngresado').val(response.data.CantidadLibroIngresado);
                         $('#editDescripcionLibro').val(response.data.DescripcionLibro);
                         $('#editEstadoLibro').val(response.data.EstadoLibro);
                         $('#hiddenEditEstadoLibro').val(response.data.EstadoLibro);
@@ -324,9 +324,12 @@
                 'Debe ingresar la cantidad del libro.');
             const esDescripcionValida = validarCampo('#editDescripcionLibro', '#editErrorDescripcionLibro',
                 'Debe ingresar una descripción del libro.');
+            const esCantidadIngresadaValida = validarCampo('#editCantidadLibroIngresado',
+                '#editErrorCantidadLibroIngresado',
+                'Debe ingresar la cantidad de libros ingresados.');
 
             if (esTituloValido && esAutorValido && esCategoriaValida && esEditorialValida && esCantidadValida &&
-                esDescripcionValida) {
+                esDescripcionValida && esCantidadIngresadaValida) {
 
                 var id = $(this).data('id');
                 var titulo = $('#editTituloLibro').val();
@@ -336,6 +339,7 @@
                 var cantidad = $('#editCantidadLibro').val();
                 var descripcion = $('#editDescripcionLibro').val();
                 var estado = $('#editEstadoLibro').val();
+                var cantidadIngresada = $('#editCantidadLibroIngresado').val();
 
                 $.ajax({
                     type: 'PUT',
@@ -347,7 +351,7 @@
                         IdAutor: idAutor,
                         IdCategoria: idCategoria,
                         IdEditorial: idEditorial,
-                        CantidadLibro: cantidad,
+                        CantidadLibroIngresado: cantidadIngresada,
                         DescripcionLibro: descripcion,
                         EstadoLibro: estado
                     },
@@ -359,30 +363,35 @@
                         updatedLibro.find('td:nth-child(2)').text(titulo);
                         updatedLibro.find('td:nth-child(3)').text(
                             `${response.data.autor.NombreAutor} ${response.data.autor.ApellidoAutor}`
-                        );
+                            );
                         updatedLibro.find('td:nth-child(4)').text(response.data.categoria
                             .NombreCategoria);
                         updatedLibro.find('td:nth-child(5)').text(response.data.editorial
                             .NombreEditorial);
-                        updatedLibro.find('td:nth-child(6)').text(cantidad);
-                        updatedLibro.find('td:nth-child(7)').html(
-                            `<div class="text-truncate" title="${descripcion}" style="max-width: 100px;">
-                                ${descripcion}
-                            </div>`
-                        );
-                        updatedLibro.find('td:nth-child(8)').html(`<span class="badge ${response.data.EstadoLibro == 'Disponible' ? 'bg-success' : 'bg-danger'}" style="font-size: 0.9em">
-                            ${response.data.EstadoLibro}</span>`);
+                        updatedLibro.find('td:nth-child(6)').text(response.data.CantidadLibroIngresado);
+                        updatedLibro.find('td:nth-child(7)').text(response.data.CantidadLibro);
+                        updatedLibro.find('td:nth-child(8)').html(
+                            `<div class="text-truncate" title="${descripcion}" style="max-width: 100px;">${descripcion}</div>`
+                            );
+                        updatedLibro.find('td:nth-child(9)').html(
+                            `<span class="badge ${response.data.EstadoLibro == 'Disponible' ? 'bg-success' : 'bg-danger'}" style="font-size: 0.9em">${response.data.EstadoLibro}</span>`
+                            );
                     },
                     error: function(response) {
                         if (response.status === 409) {
-                            Swal.fire('Error', response.responseJSON.message, 'error');
+                            var message = response.responseJSON.error || response.responseJSON
+                                .message || 'Error no especificado.';
+                            Swal.fire('Error', message, 'error');
                         } else {
-                            var errorMessage = response.responseJSON && response.responseJSON.message ?
-                                response.responseJSON.message : 'No se pudo actualizar el libro';
+                            var errorMessage =
+                                'No se pudo actualizar el libro debido a un error inesperado.';
+                            if (response.responseJSON && response.responseJSON.message) {
+                                errorMessage = response.responseJSON.message;
+                            }
                             Swal.fire('Error', errorMessage, 'error');
                         }
-
                     }
+
                 });
             }
         });

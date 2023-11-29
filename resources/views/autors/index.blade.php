@@ -147,8 +147,8 @@
                 }
 
                 // Convertir a minúsculas y remover acentos
-                nombre = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                apellido = apellido.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                nombre = nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                apellido = apellido.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 
                 $.ajax({
@@ -311,8 +311,8 @@
                 }
 
                 // Convertir a minúsculas y remover acentos
-                nombre = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                apellido = apellido.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                nombre = nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                apellido = apellido.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
                 $.ajax({
                     type: 'PUT',

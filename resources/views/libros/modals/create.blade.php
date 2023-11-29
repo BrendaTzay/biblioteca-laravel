@@ -3,7 +3,7 @@
 
 <div class="modal fade" id="addLibroModal" tabindex="-1" role="dialog" aria-labelledby="addLibroModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document"> <!-- Aumenta el tamaño del modal -->
+    <div class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addLibroModalLabel">Agregar Libro</h5>
@@ -14,7 +14,7 @@
             <div class="modal-body">
                 <form id="add-libro-form" novalidate>
                     @csrf
-                    <div class="row mb-3"> <!-- Añade margen inferior a la fila -->
+                    <div class="row mb-3"> 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="TituloLibro">Título del Libro</label>
@@ -49,9 +49,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="CantidadLibro">Cantidad de Libros</label>
-                                <input type="number" class="form-control" id="CantidadLibro" name="CantidadLibro" min="0" required>
-                                <small id="errorCantidadLibro" class="error-message text-danger d-none"></small>
+                                <label for="CantidadLibroIngresado">Cantidad de Libros Ingresados</label>
+                                <input type="number" class="form-control" id="CantidadLibroIngresado" name="CantidadLibroIngresado" min="1" required>
+                                <small id="errorCantidadLibroIngresado" class="error-message text-danger d-none"></small>
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,8 @@
                     <th>Autor</th>
                     <th>Categoría</th>
                     <th>Editorial</th>
-                    <th>Cantidad</th>
+                    <th>Cantidad Ingresada</th>
+                    <th>Cantidad Actual</th>
                     <th>Estado</th>
                 </tr>
             </thead>
@@ -34,9 +35,9 @@
                         <td>{{ $libro->autor->NombreAutor }} {{ $libro->autor->ApellidoAutor }}</td>
                         <td>{{ $libro->categoria->NombreCategoria }}</td>
                         <td>{{ $libro->editorial->NombreEditorial }}</td>
+                        <td>{{ $libro->CantidadLibroIngresado }}</td>
                         <td>{{ $libro->CantidadLibro }}</td>
                         <td>{{ $libro->EstadoLibro }}</td>
-                        <!-- ... tus otras columnas ... -->
                     </tr>
                 @empty
                     <tr>

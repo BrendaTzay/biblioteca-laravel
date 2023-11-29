@@ -58,14 +58,15 @@ class LibroController extends Controller
             'IdAutor' => 'required|exists:autors,IdAutor',
             'IdCategoria' => 'required|exists:categorias,IdCategoria',
             'IdEditorial' => 'required|exists:editorials,IdEditorial',
-            'CantidadLibro' => 'required|numeric|integer|min:0',
             'DescripcionLibro' => 'required',
+            'CantidadLibroIngresado' => 'required|numeric|integer|min:1',
         ], [
             'TituloLibro.required' => 'Ingrese el título del libro',
-            'CantidadLibro.required' => 'Debe ingresar la cantidad del libro',
-            'CantidadLibro.integer' => 'La cantidad del libro debe ser un número entero.',
             'DescripcionLibro.required' => 'Debe ingresar una descripción del libro.',
-            'CantidadLibro.numeric' => 'Únicamente se aceptan números, no letras.',
+            'CantidadLibroIngresado.required' => 'Debe ingresar la cantidad de libros ingresados.',
+            'CantidadLibroIngresado.numeric' => 'La cantidad de libros ingresados debe ser un número.',
+            'CantidadLibroIngresado.integer' => 'La cantidad de libros ingresados debe ser un número entero.',
+            'CantidadLibroIngresado.min' => 'La cantidad de libros ingresados debe ser al menos 1.',
 
         ]);
 
@@ -74,14 +75,14 @@ class LibroController extends Controller
         }
 
         try {
-            $estadoLibro = $request->input('EstadoLibro', 'Disponible');
-            $libro = Libro::create(array_merge($request->all(), ['EstadoLibro' => $estadoLibro]));
+            $libroData = $request->all();
+            $libroData['CantidadLibro'] = $libroData['CantidadLibroIngresado'];
+            $libro = Libro::create($libroData);
             $libro->load('autor', 'categoria', 'editorial');
-
 
             return response()->json(['success' => 'Libro creado con éxito!', 'data' => $libro], 201);
         } catch (\Exception $exception) {
-            return response()->json(['error' => 'Error al crear libro'], 500);
+            return response()->json(['error' => 'Error al crear libro: ' . $exception->getMessage()], 500);
         }
     }
 
@@ -99,7 +100,6 @@ class LibroController extends Controller
     public function update(Request $request, Libro $libro)
     {
         $validator = Validator::make($request->all(), [
-
             'TituloLibro' => [
                 'required',
                 function ($attribute, $value, $fail) use ($request, $libro) {
@@ -107,7 +107,7 @@ class LibroController extends Controller
                         ->where('IdAutor', $request->IdAutor)
                         ->where('IdCategoria', $request->IdCategoria)
                         ->where('IdEditorial', $request->IdEditorial)
-                        ->where('IdLibro', '!=', $libro->IdLibro) // ignorar el libro actual
+                        ->where('IdLibro', '!=', $libro->IdLibro)
                         ->exists();
                     if ($exists) {
                         $fail('Ya existe un libro con el mismo título, autor, categoría y editorial.');
@@ -117,30 +117,30 @@ class LibroController extends Controller
             'IdAutor' => 'required|exists:autors,IdAutor',
             'IdCategoria' => 'required|exists:categorias,IdCategoria',
             'IdEditorial' => 'required|exists:editorials,IdEditorial',
-            'CantidadLibro' => 'required|numeric|integer|min:0',
             'DescripcionLibro' => 'required',
+            'CantidadLibroIngresado' => 'required|numeric|integer|min:0',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->first()], 409);
         }
 
-
         try {
-            $libro->update($request->all());
+            $cantidadActualmentePrestada = $libro->CantidadLibroIngresado - $libro->CantidadLibro;
 
-            // Asegurándonos de que el estado del libro se actualiza basado en la cantidad.
-            $cantidadLibro = $request->input('CantidadLibro');
-            if ($cantidadLibro > 0) {
-                $libro->EstadoLibro = 'Disponible';
-            } else {
-                $libro->EstadoLibro = 'No Disponible';
+            // Si la nueva cantidad ingresada es menor que la actualmente prestada, devuelve un error.
+            if ($request->input('CantidadLibroIngresado') < $cantidadActualmentePrestada) {
+                return response()->json(['error' => 'La cantidad de libros ingresados no puede ser menor que la cantidad actualmente prestada.'], 409);
             }
 
-            // Guardando explícitamente el cambio de estado.
-            $libro->save();
+            // La nueva cantidad de libros en el sistema no debe exceder la nueva cantidad ingresada más la cantidad prestada.
+            $libro->CantidadLibro = min($request->input('CantidadLibroIngresado'), $libro->CantidadLibro + ($request->input('CantidadLibroIngresado') - $libro->CantidadLibroIngresado));
+            $libro->CantidadLibroIngresado = $request->input('CantidadLibroIngresado');
+            $libro->EstadoLibro = $libro->CantidadLibro > 0 ? 'Disponible' : 'No Disponible';
 
+            $libro->save();
             $libro->load('autor', 'categoria', 'editorial');
+
             return response()->json(['success' => 'Libro actualizado con éxito!', 'data' => $libro], 200);
         } catch (\Exception $exception) {
             Log::error('Error al actualizar libro: ' . $exception->getMessage());

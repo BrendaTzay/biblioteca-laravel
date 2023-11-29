@@ -41,6 +41,7 @@
                                         <th>Dirección</th>
                                         <th>Grado</th>
                                         <th>Teléfono</th>
+                                        <th>Fecha de Nacimiento</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -56,6 +57,8 @@
                                             </td>
                                             <td>{{ $usuario->GradoUsuario }}</td>
                                             <td>{{ $usuario->TelefonoUsuario }}</td>
+                                            <td>{{ $usuario->NacimientoUsuario }}</td>
+
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a href="javascript:void(0)" class="btn btn-outline-warning btn-md"
@@ -75,7 +78,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">No hay usuarios registrados</td>
+                                            <td colspan="8" class="text-center">No hay usuarios registrados</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -182,6 +185,7 @@
                 var direccion = $('#DireccionUsuario').val().trim();
                 var telefono = $('#TelefonoUsuario').val().trim();
                 var codigo = nombre.substring(0, 2) + apellido + $('#IdUsuario').val();
+                var nacimientoUsuario = $('#NacimientoUsuario').val().trim();
 
                 // Validar que los campos no estén vacíos
                 if (nombre === "") {
@@ -272,6 +276,13 @@
                 } else {
                     $('#errorApellido').addClass('d-none');
                 }
+                if (nacimientoUsuario === "") {
+                    $('#errorNacimiento').text('Debe ingresar la fecha de nacimiento').removeClass(
+                        'd-none');
+                    return;
+                } else {
+                    $('#errorNacimiento').addClass('d-none');
+                }
 
                 //ingresa los datos en minuscula
                 nombre = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -289,6 +300,7 @@
                         GradoUsuario: grado,
                         TelefonoUsuario: telefono,
                         CodigoUsuario: codigo,
+                        NacimientoUsuario: nacimientoUsuario,
                     },
                     success: function(response) {
                         Swal.fire('Creado!', 'Usuario creado con éxito!', 'success');
@@ -304,6 +316,7 @@
                                         <td>${response.data.DireccionUsuario}</td>
                                         <td>${response.data.GradoUsuario}</td>
                                         <td>${response.data.TelefonoUsuario}</td>
+                                        <td>${response.data.NacimientoUsuario}</td>
                                         <td>
                                             <a href="javascript:void(0);" class="btn btn-warning" onclick="openEditModal(${response.data.IdUsuario})">
                                                 <i class="fas fa-edit"></i>
@@ -320,11 +333,17 @@
                         $('#add-usuario-form')[0].reset();
                     },
                     error: function(response) {
-                        $('#add-autor-form')[0].reset();
-                        var errorMessage = response.responseJSON && response.responseJSON
-                            .message ? response.responseJSON.message :
-                            'No se pudo crear el usuario';
-                        Swal.fire('Error', errorMessage, 'error');
+                        $('#add-usuario-form')[0].reset();
+                        if (response.status === 409) {
+                            Swal.fire('Error',
+                                'No se puede ingresar el usuario porque ya existe', 'error');
+                        } else {
+                            var errorMessage = response.responseJSON && response.responseJSON
+                                .message ?
+                                response.responseJSON.message :
+                                'No se pudo crear el usuario';
+                            Swal.fire('Error', errorMessage, 'error');
+                        }
                     }
                 });
             });
@@ -341,6 +360,7 @@
                             $('#editApellidoUsuario').val(response.data.ApellidoUsuario);
                             $('#editDireccionUsuario').val(response.data.DireccionUsuario);
                             $('#editTelefonoUsuario').val(response.data.TelefonoUsuario);
+                            $('#editNacimientoUsuario').val(response.data.NacimientoUsuario);
                             $('#edit-usuario-form').data('id', response.data.IdUsuario);
 
                             // Establecer el radio button y la visibilidad del campo Grado basado en el tipo de usuario
@@ -366,13 +386,13 @@
 
             $('#edit-usuario-form').submit(function(e) {
                 e.preventDefault();
-                var id = $(this).data(
-                    'id'); // Asegúrate de tener un campo oculto o alguna manera de obtener el IdUsuario
+                var id = $(this).data('id');
                 var nombre = $('#editNombreUsuario').val();
                 var apellido = $('#editApellidoUsuario').val();
                 var direccion = $('#editDireccionUsuario').val();
                 var grado = $('#editGradoUsuario').val();
                 var telefono = $('#editTelefonoUsuario').val();
+                var nacimiento = $('#editNacimientoUsuario').val();
                 var codigo = nombre.substring(0, 2) + apellido + id;
 
                 // Validar que los campos no estén vacíos
@@ -470,6 +490,13 @@
                 } else {
                     $('#errorApellidoEdit').addClass('d-none');
                 }
+                if (nacimiento === "") {
+                    $('#errorNacimientoEdit').text('Debe ingresar la fecha de nacimiento').removeClass(
+                        'd-none');
+                    return;
+                } else {
+                    $('#errorNacimientoEdit').addClass('d-none');
+                }
 
                 nombre = nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 apellido = apellido.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -486,6 +513,7 @@
                         DireccionUsuario: direccion,
                         GradoUsuario: grado,
                         TelefonoUsuario: telefono,
+                        NacimientoUsuario: nacimiento,
                         CodigoUsuario: codigo,
                     },
                     success: function(response) {
@@ -497,6 +525,7 @@
                         $(`#usuario-row-${id} td:nth-child(4)`).text(direccion);
                         $(`#usuario-row-${id} td:nth-child(5)`).text(grado);
                         $(`#usuario-row-${id} td:nth-child(6)`).text(telefono);
+                        $(`#usuario-row-${id} td:nth-child(7)`).text(nacimiento);
                     },
                     error: function(response) {
                         var errorMessage = response.responseJSON && response.responseJSON

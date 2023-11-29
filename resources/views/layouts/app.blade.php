@@ -44,7 +44,7 @@
                 <div>
                     <div class="nav__logo">
                         <img src="{{ asset('img/logo.png') }}" alt="Logo" class="logo">
-                        <span class="nav__title">Biblioteca</span>
+                        <span class="nav__title">Buena Vista</span>
                     </div>
                     <div class="nav__divider"></div>
                     <div class="nav__list">

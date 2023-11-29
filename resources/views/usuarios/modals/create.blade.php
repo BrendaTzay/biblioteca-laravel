@@ -58,6 +58,12 @@
                             <option value="Sexto-Primaria">Sexto-Primaria</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="NacimientoUsuario">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="NacimientoUsuario" name="NacimientoUsuario"
+                            required>
+                        <small id="errorNacimiento" class="error-message text-danger d-none"></small>
+                    </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>

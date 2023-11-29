@@ -22,6 +22,7 @@ class Libro extends Model
         'IdCategoria',
         'IdEditorial',
         'CantidadLibro',
+        'CantidadLibroIngresado',
         'DescripcionLibro',
     ];
 

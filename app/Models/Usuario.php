@@ -9,7 +9,7 @@ class Usuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'usuarios'; 
+    protected $table = 'usuarios';
     protected $primaryKey = 'IdUsuario';
 
     protected $fillable = [
@@ -19,6 +19,7 @@ class Usuario extends Model
         'CodigoUsuario',
         'DireccionUsuario',
         'TelefonoUsuario',
+        'NacimientoUsuario',
     ];
 
     public function prestamos()

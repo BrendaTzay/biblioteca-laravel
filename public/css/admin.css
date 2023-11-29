@@ -417,10 +417,16 @@ a{
 }
 
 .logo {
-  width: auto; /* o un tamaño fijo con un máximo de 100% */
-  height: 3rem; /* o la altura que desees, pero asegúrate de que es responsive */
-  margin-right: 0.1rem; /* Espacio entre el logo y el título */
+  width: auto; 
+  height: 3rem; 
+  margin-right: 0.1rem; 
 }
+
+.nav__title {
+  color: var(--white-color);
+  font-weight: bold;
+}
+
 
 
 
