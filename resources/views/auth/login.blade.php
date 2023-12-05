@@ -40,4 +40,7 @@
             </div>
         </div>
     </div>
+    <footer class="login-footer">
+        Desarrollado por: Brenda Marina Tzay Cuxulic
+    </footer>
 @endsection

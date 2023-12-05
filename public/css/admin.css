@@ -76,7 +76,7 @@ a{
   padding: .5rem 1rem 0 0;
   transition: .5s;
   z-index: var(--z-fixed);
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .nav{
@@ -427,16 +427,17 @@ a{
   font-weight: bold;
 }
 
-.nav__item {
-  padding: 1rem;
+/* Estilos para el footer del login */
+.login-footer {
   text-align: center;
-  font-size: 0.6rem;
-  color: #dfdcdc;
+  padding: 1rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #EAEAE9; 
+  color: #353f4e;
+  font-size: 0.8rem;
 }
-
-
-
-
-
 
 
