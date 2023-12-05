@@ -76,7 +76,7 @@ a{
   padding: .5rem 1rem 0 0;
   transition: .5s;
   z-index: var(--z-fixed);
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .nav{
@@ -430,7 +430,7 @@ a{
 .nav__item {
   padding: 1rem;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: #dfdcdc;
 }
 

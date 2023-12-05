@@ -21,6 +21,10 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
+Route::get('/test-notifications', function () {
+    app(\App\Console\Kernel::class)->generateOverdueNotifications();
+    return 'Notifications generated!';
+});
 
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login');
 
