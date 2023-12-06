@@ -13,6 +13,7 @@
                                 <i class="fas fa-bell mr-2"></i>Notificaciones
                             </h5>
                             <div class="d-flex align-items-center">
+                                <!-- Dropdown de selección -->
                                 <div class="dropdown mr-2">
                                     <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
                                         id="selectionDropdown" data-toggle="dropdown" aria-haspopup="true"
@@ -20,15 +21,19 @@
                                         Seleccionar
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="selectionDropdown">
-                                        <a class="dropdown-item" href="#">Todo</a>
-                                        <a class="dropdown-item" href="#">Nada</a>
-                                        <a class="dropdown-item" href="#">Leído</a>
-                                        <a class="dropdown-item" href="#">No leído</a>
+                                        <a class="dropdown-item" href="#" id="selectAllOption">Todo</a>
+                                        <a class="dropdown-item" href="#" id="deselectAllOption">Nada</a>
+                                        <a class="dropdown-item" href="#" id="selectRead">Leído</a>
+                                        <a class="dropdown-item" href="#" id="selectUnread">No leído</a>
                                     </div>
                                 </div>
+
+                                <!-- Tus botones actuales -->
                                 <button id="mark-read" class="btn btn-outline-primary btn-sm mr-2">Marcar como
                                     leído</button>
                                 <button id="delete-selected" class="btn btn-outline-danger btn-sm mr-2">Eliminar</button>
+
+                                <!-- Campo de búsqueda -->
                                 <div class="search-container">
                                     <input type="text" id="search" class="form-control" placeholder="Buscar...">
                                 </div>
@@ -36,9 +41,29 @@
                         </div>
                     </div>
                     <div class="card-body p-0">
-                        <div class="text-center py-5">
-                            <span>No hay notificaciones.</span>
-                        </div>
+                        @if (!$notifications->isEmpty())
+                            <div class="notification-card">
+                                <ul class="list-group">
+                                    @foreach ($notifications as $notification)
+                                        <li
+                                            class="list-group-item d-flex align-items-center {{ $notification->read ? 'read' : 'unread' }}">
+                                            <input type="checkbox" class="notification-checkbox"
+                                                value="{{ $notification->id }}">
+                                            <span class="ml-2">{{ $notification->message }}</span>
+                                            <span
+                                                class="badge {{ $notification->read ? 'badge-success' : 'badge-warning' }} ml-auto"
+                                                id="badge-{{ $notification->id }}">
+                                                {{ $notification->read ? 'Leído' : 'No leído' }}
+                                            </span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @else
+                            <div class="text-center py-5">
+                                <span>No hay notificaciones.</span>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

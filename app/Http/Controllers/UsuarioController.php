@@ -109,7 +109,7 @@ class UsuarioController extends Controller
             if ($usuario->TelefonoUsuario === $request->TelefonoUsuario) $coincidencias++;
             if ($usuario->NacimientoUsuario === $request->NacimientoUsuario) $coincidencias++;
 
-            return $coincidencias >= 3; 
+            return $coincidencias >= 3;
         });
 
         if ($coincidencias->isNotEmpty()) {
@@ -117,15 +117,19 @@ class UsuarioController extends Controller
         }
 
         try {
-            // Genera el CodigoUsuario antes de crear el usuario
-            $codigoUsuario = substr($request->NombreUsuario, 0, 2) . $request->ApellidoUsuario;
+            // Separa los apellidos y toma solo el primero
+            $apellidos = explode(' ', $request->ApellidoUsuario);
+            $primerApellido = $apellidos[0];
+
+            // Genera el CodigoUsuario usando las dos primeras letras del nombre y el primer apellido
+            $codigoUsuario = substr($request->NombreUsuario, 0, 2) . $primerApellido;
             $usuarioData = array_merge($request->all(), ['CodigoUsuario' => $codigoUsuario]);
             $usuario = Usuario::create($usuarioData);
 
-            // Obtenemos el IdUsuario, genera el CodigoUsuario final y actualiza el usuario
+            // Obtiene el IdUsuario, genera el CodigoUsuario final y actualiza el usuario
             $codigoUsuarioFinal = $codigoUsuario . $usuario->IdUsuario;
-
             $usuario->update(['CodigoUsuario' => $codigoUsuarioFinal]);
+
             return response()->json(['success' => 'Usuario creado con éxito!', 'data' => $usuario], 201);
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error al crear usuario'], 500);

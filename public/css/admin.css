@@ -427,17 +427,5 @@ a{
   font-weight: bold;
 }
 
-/* Estilos para el footer del login */
-.login-footer {
-  text-align: center;
-  padding: 1rem;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #EAEAE9; 
-  color: #353f4e;
-  font-size: 0.8rem;
-}
 
 
