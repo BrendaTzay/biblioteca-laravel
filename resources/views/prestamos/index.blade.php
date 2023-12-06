@@ -250,10 +250,10 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-warning mr-2" onclick="openEditModal(${response.data.IdPrestamo})">
+                            <button class="btn btn-outline-warning btn-md" onclick="openEditModal(${response.data.IdPrestamo})">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-info" onclick="generateReport(${response.data.IdPrestamo})">
+                            <button class="btn btn-outline-info btn-md" onclick="generateReport(${response.data.IdPrestamo})">
                                 <i class="fas fa-file-pdf"></i>
                             </button>
                         </div>

@@ -171,13 +171,13 @@
                                         <td>${response.data.NombreAutor}</td>
                                         <td>${response.data.ApellidoAutor}</td>
                                         <td>
-                                            <a href="javascript:void(0);" class="btn btn-warning" onclick="openEditModal(${response.data.IdAutor})">
+                                            <a href="javascript:void(0);" class="btn btn-outline-warning btn-md" onclick="openEditModal(${response.data.IdAutor})">
                                                 <i class="fas fa-edit"></i>
                                                 </a>
-                                            <button class="btn btn-danger" onclick="confirmDelete(${response.data.IdAutor})">
+                                            <button class="btn btn-outline-danger btn-md" onclick="confirmDelete(${response.data.IdAutor})">
                                                 <i class="fas fa-trash-alt"></i>
                                                 </button>
-                                            <button class="btn btn-info" onclick="generateReport(${response.data.IdAutor})">
+                                            <button class="btn btn-outline-info btn-md" onclick="generateReport(${response.data.IdAutor})">
                                                     <i class="fas fa-file-pdf"></i>
                                                 </button>
                                         </td>

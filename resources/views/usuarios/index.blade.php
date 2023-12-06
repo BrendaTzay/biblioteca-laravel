@@ -11,7 +11,7 @@
                     <div class="card-header bg-white">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <h5 class="mb-0"> <!-- Título con estilo de Bootstrap para mantener la consistencia -->
+                                <h5 class="mb-0"> 
                                     <i class="fa fa-user mr-2"></i>Usuarios
                                 </h5>
                             </div>
@@ -318,13 +318,13 @@
                                         <td>${response.data.TelefonoUsuario}</td>
                                         <td>${response.data.NacimientoUsuario}</td>
                                         <td>
-                                            <a href="javascript:void(0);" class="btn btn-warning" onclick="openEditModal(${response.data.IdUsuario})">
+                                            <a href="javascript:void(0);" class="btn btn-outline-warning btn-md" onclick="openEditModal(${response.data.IdUsuario})">
                                                 <i class="fas fa-edit"></i>
                                                 </a>
-                                            <button class="btn btn-danger" onclick="confirmDelete(${response.data.IdUsuario})">
+                                            <button class="btn btn-outline-danger btn-md" onclick="confirmDelete(${response.data.IdUsuario})">
                                                 <i class="fas fa-trash-alt"></i>
                                                 </button>
-                                            <button class="btn btn-primary" onclick="generateReport(${response.data.IdUsuario})">
+                                            <button class="btn btn-outline-info btn-md" onclick="generateReport(${response.data.IdUsuario})">
                                                     <i class="fas fa-file-pdf"></i>
                                                 </button>  
                                         </td>

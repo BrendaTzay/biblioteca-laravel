@@ -213,10 +213,10 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-end">
-                        <a href="javascript:void(0);" class="btn btn-warning mr-2" onclick="openEditModal(${response.data.IdLibro})">
+                        <a href="javascript:void(0);" class="btn btn-outline-warning btn-md" onclick="openEditModal(${response.data.IdLibro})">
                             <i class="fas fa-edit"></i>    
                             </a>
-                        <button class="btn btn-danger" onclick="confirmDelete(${response.data.IdLibro})">
+                        <button class="btn btn-outline-danger btn-md" onclick="confirmDelete(${response.data.IdLibro})">
                             <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
